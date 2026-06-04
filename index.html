@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Hot Stems — Campaign Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --fire: #ff4500;
+    --amber: #ff8c00;
+    --ember: #ff6b35;
+    --purple: #da70d6;
+    --dark: #050505;
+    --cream: rgba(255,245,230,0.92);
+    --muted: rgba(255,200,150,0.65);
+  }
+
+  html, body {
+    width: 100%; min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND ── */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .bg-glow-l {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 70% at -5% 60%, rgba(255,69,0,0.13) 0%, transparent 60%);
+  }
+  .bg-glow-r {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 70% at 105% 40%, rgba(120,0,180,0.11) 0%, transparent 60%);
+  }
+  .bg-glow-c {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 40% 40% at 50% 20%, rgba(255,69,0,0.05) 0%, transparent 65%);
+  }
+  .scanline {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,140,0,0.012) 3px, rgba(255,140,0,0.012) 4px);
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  .grain {
+    position: fixed; inset: -50%; z-index: 1; pointer-events: none; opacity: 0.025;
+    width: 200%; height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    animation: grainMove 0.5s steps(1) infinite;
+  }
+  @keyframes grainMove {
+    0%   { transform: translate(0,0); }
+    25%  { transform: translate(-2px, 2px); }
+    50%  { transform: translate(2px, -2px); }
+    75%  { transform: translate(-1px, -1px); }
+    100% { transform: translate(1px, 1px); }
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 48px 24px 64px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center; margin-bottom: 64px;
+  }
+
+  .class-badge {
+    display: inline-block;
+    background: rgba(255,69,0,0.1);
+    border: 1px solid rgba(255,69,0,0.3);
+    border-radius: 3px;
+    padding: 4px 14px;
+    font-size: 0.68rem;
+    color: var(--ember);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .main-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.88;
+    letter-spacing: 4px;
+    color: var(--fire);
+    text-shadow:
+      0 0 60px rgba(255,69,0,0.55),
+      0 0 120px rgba(255,69,0,0.2);
+    position: relative;
+    display: inline-block;
+  }
+
+  .main-logo .flame-letter {
+    display: inline-block;
+    animation: flamePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes flamePulse {
+    0%,100% { text-shadow: 0 0 60px rgba(255,69,0,0.55), 0 0 120px rgba(255,69,0,0.2); }
+    50% { text-shadow: 0 0 80px rgba(255,69,0,0.8), 0 0 160px rgba(255,69,0,0.35), 0 0 240px rgba(255,100,0,0.1); }
+  }
+
+  .logo-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(0.9rem, 2.5vw, 1.6rem);
+    color: var(--amber);
+    letter-spacing: 8px;
+    margin-top: 6px;
+  }
+
+  .logo-tagline {
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── WING DIVIDER ── */
+  .wing-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 20px auto 0;
+    max-width: 300px;
+  }
+  .wing-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,69,0,0.35), transparent); }
+  .wing-icon { font-size: 18px; opacity: 0.65; }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  @media (max-width: 780px) {
+    .cards-grid { grid-template-columns: 1fr; max-width: 420px; }
+  }
+
+  /* ── CARD ── */
+  .card {
+    position: relative;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,140,0,0.15);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: rgba(255,140,0,0.45);
+    box-shadow: 0 20px 60px rgba(255,69,0,0.15), 0 8px 24px rgba(0,0,0,0.5);
+  }
+
+  .card:active { transform: translateY(-2px) scale(0.99); }
+
+  .card-inner-glow {
+    position: absolute; inset: 0; pointer-events: none; border-radius: 14px;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .card:hover .card-inner-glow { opacity: 1; }
+
+  /* Card A — Animation */
+  .card-a .card-inner-glow {
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,69,0,0.08) 0%, transparent 65%);
+  }
+  /* Card B — Instagram */
+  .card-b .card-inner-glow {
+    background: radial-gradient(ellipse at 50% 0%, rgba(218,112,214,0.08) 0%, transparent 65%);
+  }
+  /* Card C — Proposal */
+  .card-c .card-inner-glow {
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,140,0,0.08) 0%, transparent 65%);
+  }
+
+  /* ── CARD THUMBNAIL ── */
+  .card-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animation card thumb */
+  .card-a .card-thumb {
+    background: #050505;
+  }
+  .thumb-scene-a {
+    width: 100%; height: 100%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .thumb-table {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 38%;
+    background: repeating-linear-gradient(90deg,#1c0c00 0px,#2a1200 20px,#1c0c00 40px);
+    border-top: 1px solid #5c2800;
+  }
+  .thumb-glow-l { position: absolute; bottom: 0; left: 0; width: 50%; height: 100%; background: radial-gradient(ellipse at 0% 80%, rgba(255,69,0,0.2) 0%, transparent 70%); }
+  .thumb-glow-r { position: absolute; bottom: 0; right: 0; width: 50%; height: 100%; background: radial-gradient(ellipse at 100% 60%, rgba(120,0,180,0.15) 0%, transparent 70%); }
+  .thumb-host { position: absolute; bottom: 36%; left: 15%; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .thumb-guest { position: absolute; bottom: 36%; right: 15%; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .t-head { width: 28px; height: 28px; border-radius: 50%; }
+  .t-body { width: 28px; height: 36px; border-radius: 4px 4px 0 0; }
+  .thumb-host .t-head { background: #c8956c; }
+  .thumb-host .t-body { background: #1a1a2e; }
+  .thumb-guest .t-head { background: #a0785a; }
+  .thumb-guest .t-body { background: #2d0a4e; }
+  .thumb-wings { position: absolute; bottom: 36%; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; align-items: flex-end; }
+  .t-wing { width: 18px; height: 15px; background: #8B4513; border-radius: 50% 40% 60% 30%/40% 50% 50% 60%; position: relative; }
+  .t-wing.hot { background: #8B4513; filter: drop-shadow(0 0 4px #ff4500); }
+  .t-wing.hot::after { content:''; position: absolute; inset: 0; border-radius: inherit; background: rgba(255,69,0,0.4); }
+  .thumb-logo { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: #ff4500; letter-spacing: 2px; white-space: nowrap; text-shadow: 0 0 12px rgba(255,69,0,0.7); }
+  .thumb-flames { position: absolute; bottom: 72%; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; }
+  .t-flame { width: 4px; height: 8px; border-radius: 50% 50% 30% 30%; animation: flick 0.3s ease alternate infinite; }
+  .t-flame:nth-child(1) { background: #ff4500; animation-delay: 0s; }
+  .t-flame:nth-child(2) { background: #ff8c00; animation-delay: 0.1s; height: 11px; width: 5px; }
+  .t-flame:nth-child(3) { background: #ffcc00; animation-delay: 0.05s; }
+  @keyframes flick { 0%{transform:scaleX(1) scaleY(1) rotate(-2deg);} 100%{transform:scaleX(0.8) scaleY(1.2) rotate(2deg);} }
+
+  /* Instagram card thumb */
+  .card-b .card-thumb {
+    background: #0a0a0a;
+  }
+  .thumb-ig {
+    width: 100%; height: 100%; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at 30% 60%, rgba(255,69,0,0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 40%, rgba(120,0,180,0.2) 0%, transparent 50%),
+                #0a0a0a;
+  }
+  .thumb-ig-content { text-align: center; padding: 12px; }
+  .thumb-ig-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: #ff4500; letter-spacing: 2px; text-shadow: 0 0 16px rgba(255,69,0,0.6); line-height: 1; }
+  .thumb-ig-sub { font-family: 'Bebas Neue', sans-serif; font-size: 8px; color: #ff8c00; letter-spacing: 4px; margin-top: 1px; }
+  .thumb-ig-badge { display: inline-block; background: rgba(255,69,0,0.15); border: 1px solid rgba(255,69,0,0.3); border-radius: 3px; padding: 2px 8px; font-size: 7px; color: #ff8c00; letter-spacing: 2px; font-family: 'Bebas Neue',sans-serif; margin-top: 6px; }
+  .thumb-ig-stat { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #ff4500; text-shadow: 0 0 12px rgba(255,69,0,0.5); margin-top: 6px; }
+  .thumb-ig-stat-desc { font-size: 7.5px; color: rgba(255,200,150,0.75); line-height: 1.4; }
+  .thumb-ig-hearts { font-size: 9px; margin-top: 5px; opacity: 0.7; letter-spacing: 4px; }
+
+  /* Proposal card thumb */
+  .card-c .card-thumb {
+    background: #050505;
+  }
+  .thumb-proposal {
+    width: 100%; height: 100%; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    padding: 14px;
+    background: radial-gradient(ellipse at 20% 50%, rgba(255,69,0,0.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(120,0,180,0.08) 0%, transparent 60%),
+                #050505;
+  }
+  .thumb-prop-logo { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: #ff4500; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,69,0,0.5); }
+  .thumb-prop-title { font-family: 'Bebas Neue', sans-serif; font-size: 10px; color: rgba(255,220,180,0.8); letter-spacing: 1px; text-align: center; }
+  .thumb-slides { display: flex; gap: 4px; margin-top: 3px; }
+  .thumb-slide-pill { width: 22px; height: 14px; border-radius: 3px; background: rgba(255,140,0,0.08); border: 1px solid rgba(255,140,0,0.2); display: flex; align-items: center; justify-content: center; }
+  .thumb-slide-pill.active { background: rgba(255,69,0,0.18); border-color: rgba(255,69,0,0.4); }
+  .thumb-slide-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,140,0,0.5); }
+  .thumb-slide-dot.active { background: #ff4500; box-shadow: 0 0 5px rgba(255,69,0,0.6); }
+  .thumb-prop-ring { position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 1px solid rgba(255,69,0,0.05); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; animation: ringPulse 3s ease-in-out infinite; }
+  .thumb-prop-ring2 { position: absolute; width: 220px; height: 220px; border-radius: 50%; border: 1px solid rgba(255,69,0,0.03); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; animation: ringPulse 3s ease-in-out 0.8s infinite; }
+  @keyframes ringPulse { 0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1);}50%{opacity:0.5;transform:translate(-50%,-50%) scale(1.05);} }
+
+  /* ── CARD CONTENT ── */
+  .card-body {
+    padding: 20px 22px 22px;
+  }
+
+  .card-ep-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+
+  .card-ep-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+  .card-a .card-ep-badge { color: #ff4500; border-color: rgba(255,69,0,0.4); background: rgba(255,69,0,0.08); }
+  .card-b .card-ep-badge { color: #da70d6; border-color: rgba(218,112,214,0.4); background: rgba(218,112,214,0.08); }
+  .card-c .card-ep-badge { color: #ff8c00; border-color: rgba(255,140,0,0.4); background: rgba(255,140,0,0.08); }
+
+  .card-type {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.45rem;
+    letter-spacing: 1px;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+  .card-a .card-title { color: #ff4500; }
+  .card-b .card-title { color: #da70d6; }
+  .card-c .card-title { color: #ff8c00; }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: rgba(255,220,180,0.7);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 2px;
+    padding: 9px 18px;
+    border-radius: 6px;
+    border: 1px solid;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-a .card-cta {
+    color: #ff4500;
+    border-color: rgba(255,69,0,0.35);
+    background: rgba(255,69,0,0.07);
+  }
+  .card-a:hover .card-cta {
+    background: rgba(255,69,0,0.18);
+    border-color: rgba(255,69,0,0.6);
+    box-shadow: 0 0 16px rgba(255,69,0,0.2);
+  }
+
+  .card-b .card-cta {
+    color: #da70d6;
+    border-color: rgba(218,112,214,0.35);
+    background: rgba(218,112,214,0.07);
+  }
+  .card-b:hover .card-cta {
+    background: rgba(218,112,214,0.18);
+    border-color: rgba(218,112,214,0.6);
+    box-shadow: 0 0 16px rgba(218,112,214,0.2);
+  }
+
+  .card-c .card-cta {
+    color: #ff8c00;
+    border-color: rgba(255,140,0,0.35);
+    background: rgba(255,140,0,0.07);
+  }
+  .card-c:hover .card-cta {
+    background: rgba(255,140,0,0.18);
+    border-color: rgba(255,140,0,0.6);
+    box-shadow: 0 0 16px rgba(255,140,0,0.2);
+  }
+
+  .cta-arrow {
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+  .card:hover .cta-arrow { transform: translateX(4px); }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 64px;
+    text-align: center;
+  }
+
+  .footer-heat {
+    display: flex; justify-content: center; gap: 6px; margin-bottom: 12px;
+  }
+  .footer-wing { font-size: 16px; opacity: 0.35; }
+  .footer-wing.lit { opacity: 0.9; filter: drop-shadow(0 0 5px rgba(255,69,0,0.7)); }
+
+  .footer-text {
+    font-size: 0.75rem;
+    color: rgba(255,200,150,0.4);
+    letter-spacing: 1px;
+  }
+
+  .footer-text strong {
+    color: rgba(255,200,150,0.65);
+    font-weight: 500;
+  }
+
+  /* ── STAGGER REVEALS ── */
+  .reveal { opacity: 0; transform: translateY(20px); animation: revealIn 0.7s ease forwards; }
+  .reveal-1 { animation-delay: 0.1s; }
+  .reveal-2 { animation-delay: 0.22s; }
+  .reveal-3 { animation-delay: 0.34s; }
+  .reveal-4 { animation-delay: 0.5s; }
+  .reveal-5 { animation-delay: 0.62s; }
+  .reveal-6 { animation-delay: 0.74s; }
+
+  @keyframes revealIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.open { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-shell {
+    width: 100%; max-width: 1100px;
+    height: 90vh;
+    background: #080808;
+    border: 1px solid rgba(255,140,0,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes slideUp { from { opacity:0; transform: translateY(30px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
+
+  .modal-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    background: rgba(0,0,0,0.6);
+    border-bottom: 1px solid rgba(255,140,0,0.15);
+    flex-shrink: 0;
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: var(--amber);
+  }
+
+  .modal-close {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.6);
+    font-size: 1rem;
+    width: 32px; height: 32px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s ease, color 0.2s ease;
+    font-family: monospace;
+  }
+  .modal-close:hover { background: rgba(255,69,0,0.2); color: #ff4500; border-color: rgba(255,69,0,0.4); }
+
+  .modal-iframe-wrap {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+  }
+
+  .modal-iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* Animation modal — fills modal shell, iframe handles its own centering */
+  .modal-overlay.anim-modal .modal-shell {
+    max-width: 1100px;
+    height: 90vh;
+  }
+  .modal-overlay.anim-modal .modal-iframe-wrap {
+    flex: 1;
+    overflow: hidden;
+  }
+  .modal-overlay.anim-modal .modal-iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* IG special sizing — auto height, full content visible, no scroll */
+  .modal-overlay.ig-modal {
+    align-items: center;
+  }
+  .modal-overlay.ig-modal .modal-shell {
+    max-width: 460px;
+    width: 100%;
+    height: auto;
+    max-height: 95vh;
+    overflow: hidden;
+  }
+  .modal-overlay.ig-modal .modal-iframe-wrap {
+    flex: none;
+    height: 870px;
+    max-height: calc(95vh - 80px);
+    overflow: hidden;
+    display: block;
+  }
+  .modal-overlay.ig-modal .modal-iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* Keyboard hint */
+  .modal-hint {
+    font-size: 0.68rem;
+    color: rgba(255,200,150,0.3);
+    letter-spacing: 1px;
+    padding: 6px 18px;
+    text-align: center;
+    border-top: 1px solid rgba(255,140,0,0.08);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-layer">
+  <div class="bg-glow-l"></div>
+  <div class="bg-glow-r"></div>
+  <div class="bg-glow-c"></div>
+  <div class="scanline"></div>
+</div>
+<div class="grain"></div>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="class-badge reveal reveal-1">Challenge &amp; Change · Grade 12 · Campaign Project</div>
+
+    <div class="main-logo reveal reveal-2">
+      <span class="flame-letter">🔥</span> HOT STEMS
+    </div>
+    <div class="logo-sub reveal reveal-3">Truth &nbsp;·&nbsp; Heat &nbsp;·&nbsp; Breakthroughs</div>
+    <p class="logo-tagline reveal reveal-3">A student-led initiative confronting gender bias in STEM, one wing at a time.</p>
+
+    <div class="wing-divider reveal reveal-4">
+      <div class="wing-line"></div>
+      <span class="wing-icon">🍗</span>
+      <span class="wing-icon">🍗</span>
+      <span class="wing-icon">🌶</span>
+      <div class="wing-line"></div>
+    </div>
+  </header>
+
+  <!-- CARDS -->
+  <div class="cards-grid">
+
+    <!-- CARD A — Animation -->
+    <div class="card card-a reveal reveal-4" onclick="openModal('animation')">
+      <div class="card-inner-glow"></div>
+
+      <div class="card-thumb">
+        <div class="thumb-scene-a">
+          <div class="thumb-glow-l"></div>
+          <div class="thumb-glow-r"></div>
+          <div class="thumb-logo">🔥 HOT STEMS</div>
+          <div class="thumb-host">
+            <div class="t-head"></div>
+            <div class="t-body"></div>
+          </div>
+          <div class="thumb-wings">
+            <div class="t-wing"></div>
+            <div class="t-wing"></div>
+            <div class="t-wing"></div>
+            <div class="t-wing hot"></div>
+            <div class="t-wing hot"></div>
+          </div>
+          <div class="thumb-flames">
+            <div class="t-flame"></div>
+            <div class="t-flame"></div>
+            <div class="t-flame"></div>
+          </div>
+          <div class="thumb-guest">
+            <div class="t-head"></div>
+            <div class="t-body"></div>
+          </div>
+          <div class="thumb-table"></div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-ep-row">
+          <span class="card-ep-badge">ANIMATED TEASER</span>
+          <span class="card-type">~47 sec</span>
+        </div>
+        <div class="card-title">Mock Interview Animation</div>
+        <p class="card-desc">A cinematic animated preview of the Hot Stems interview format — host, guest, five wing rounds, real stats, real quotes.</p>
+        <div class="card-cta">
+          WATCH ANIMATION <span class="cta-arrow">▶</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD B — Instagram -->
+    <div class="card card-b reveal reveal-5" onclick="openModal('instagram')">
+      <div class="card-inner-glow"></div>
+
+      <div class="card-thumb">
+        <div class="thumb-ig">
+          <div class="thumb-ig-content">
+            <div class="thumb-ig-logo">🔥 HOT STEMS</div>
+            <div class="thumb-ig-sub">Truth · Heat · Breakthroughs</div>
+            <div class="thumb-ig-badge">EP. 01 · NEW 🔥</div>
+            <div class="thumb-ig-stat">28%</div>
+            <div class="thumb-ig-stat-desc">of STEM workers in Canada are women.<br>This is what closing that gap looks like.</div>
+            <div class="thumb-ig-hearts">♡ &nbsp;💬 &nbsp;↗</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-ep-row">
+          <span class="card-ep-badge">SOCIAL MEDIA</span>
+          <span class="card-type">Instagram Post</span>
+        </div>
+        <div class="card-title">Campaign Instagram Post</div>
+        <p class="card-desc">A fully designed Instagram post mockup for Episode 1 — interactive likes, comments, and a real stat callout on gender disparity in STEM.</p>
+        <div class="card-cta">
+          VIEW POST <span class="cta-arrow">→</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD C — Proposal -->
+    <div class="card card-c reveal reveal-6" onclick="openModal('proposal')">
+      <div class="card-inner-glow"></div>
+
+      <div class="card-thumb">
+        <div class="thumb-proposal">
+          <div class="thumb-prop-ring"></div>
+          <div class="thumb-prop-ring2"></div>
+          <div class="thumb-prop-logo">🔥 HOT STEMS</div>
+          <div class="thumb-prop-title">School Initiative Proposal</div>
+          <div class="thumb-slides">
+            <div class="thumb-slide-pill active"><div class="thumb-slide-dot active"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+            <div class="thumb-slide-pill"><div class="thumb-slide-dot"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-ep-row">
+          <span class="card-ep-badge">8 SLIDES</span>
+          <span class="card-type">School Pitch Deck</span>
+        </div>
+        <div class="card-title">School Initiative Proposal</div>
+        <p class="card-desc">An 8-slide presentation deck pitching Hot Stems to school administration — the problem, format, speakers, schedule, and a sample email.</p>
+        <div class="card-cta">
+          OPEN PROPOSAL <span class="cta-arrow">→</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid -->
+
+  <!-- FOOTER -->
+  <footer class="footer reveal reveal-6">
+    <div class="footer-heat">
+      <span class="footer-wing">🍗</span>
+      <span class="footer-wing">🍗</span>
+      <span class="footer-wing">🍗</span>
+      <span class="footer-wing lit">🍗</span>
+      <span class="footer-wing lit">🌶</span>
+    </div>
+    <p class="footer-text"><strong>Challenge &amp; Change · Grade 12</strong> &nbsp;·&nbsp; Gender Bias in STEM Awareness Initiative &nbsp;·&nbsp; 2025–26</p>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- ── MODAL OVERLAY ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal-shell">
+    <div class="modal-topbar">
+      <span class="modal-title" id="modal-title">HOT STEMS</span>
+      <button class="modal-close" onclick="closeModal()" title="Close (Esc)">✕</button>
+    </div>
+    <div class="modal-iframe-wrap">
+      <iframe id="modal-iframe" src="" title="Hot Stems Component" allowfullscreen></iframe>
+    </div>
+    <div class="modal-hint">Press <kbd style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:1px 5px;font-size:0.68rem;">Esc</kbd> to close</div>
+  </div>
+</div>
+
+<script>
+  const configs = {
+    animation: {
+      src: 'hot_stems_animation.html',
+      title: '🔥 MOCK INTERVIEW ANIMATION',
+      ig: false
+    },
+    instagram: {
+      src: 'hot_stems_instagram_post.html',
+      title: '📸 INSTAGRAM POST — EP.01',
+      ig: true
+    },
+    proposal: {
+      src: 'hot_stems_proposal.html',
+      title: '📋 SCHOOL INITIATIVE PROPOSAL',
+      ig: false
+    }
+  };
+
+  const overlay = document.getElementById('modal-overlay');
+  const iframe = document.getElementById('modal-iframe');
+  const titleEl = document.getElementById('modal-title');
+
+  function openModal(type) {
+    const cfg = configs[type];
+    if (!cfg) return;
+
+    iframe.src = '';
+    titleEl.textContent = cfg.title;
+
+    // Reset modal type classes
+    overlay.classList.remove('ig-modal', 'anim-modal');
+
+    if (cfg.ig) {
+      overlay.classList.add('ig-modal');
+    } else if (type === 'animation') {
+      overlay.classList.add('anim-modal');
+    }
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => { iframe.src = cfg.src; }, 50);
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open', 'ig-modal', 'anim-modal');
+    document.body.style.overflow = '';
+    setTimeout(() => { iframe.src = ''; }, 250);
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === overlay) closeModal();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>

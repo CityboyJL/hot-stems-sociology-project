@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #1a1a1a;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+
+  .ig-container {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 0.5px solid #dbdbdb;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* TOP BAR */
+  .ig-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 0.5px solid #dbdbdb;
+  }
+
+  .ig-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .ig-handle {
+    font-weight: 600;
+    font-size: 13px;
+    color: #262626;
+    line-height: 1.2;
+  }
+
+  .ig-location {
+    font-size: 11px;
+    color: #737373;
+  }
+
+  .ig-more {
+    margin-left: auto;
+    font-size: 18px;
+    color: #737373;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+  }
+
+  /* POST IMAGE */
+  .ig-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .post-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(255,69,0,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 40%, rgba(120,0,180,0.25) 0%, transparent 50%),
+      #0a0a0a;
+  }
+
+  .post-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+  }
+
+  .post-show-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: #ff4500;
+    line-height: 1;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(255,69,0,0.7);
+    margin-bottom: 2px;
+  }
+
+  .post-show-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: #ff8c00;
+    letter-spacing: 6px;
+    margin-bottom: 16px;
+  }
+
+  /* Guest card inside post */
+  .guest-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(218,112,214,0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 0 auto 14px;
+    max-width: 300px;
+    text-align: left;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .guest-photo {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2d0a4e, #8b0057);
+    border: 2px solid rgba(218,112,214,0.5);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+
+  .guest-info { flex: 1; }
+
+  .guest-name-post {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: #da70d6;
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+
+  .guest-creds {
+    font-size: 10px;
+    color: rgba(255,220,180,0.7);
+    line-height: 1.5;
+    margin-top: 2px;
+  }
+
+  /* STAT CALLOUT */
+  .post-stat {
+    background: rgba(255,69,0,0.12);
+    border: 1px solid rgba(255,69,0,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    max-width: 300px;
+    margin: 0 auto 14px;
+  }
+
+  .stat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: #ff4500;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(255,69,0,0.5);
+  }
+
+  .stat-small {
+    font-size: 10px;
+    color: rgba(255,200,150,0.85);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  /* QUOTE */
+  .post-quote {
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-size: 11.5px;
+    color: rgba(255,240,220,0.85);
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 0 8px;
+    border-left: 2px solid #ff4500;
+    text-align: left;
+  }
+
+  /* WINGS ROW */
+  .wings-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .mini-wing {
+    font-size: 18px;
+    opacity: 0.6;
+  }
+  .mini-wing.hot { opacity: 1; filter: drop-shadow(0 0 6px rgba(255,69,0,0.8)); }
+
+  /* EPISODE TAG */
+  .ep-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(255,140,0,0.4);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    color: #ff8c00;
+    letter-spacing: 2px;
+    z-index: 5;
+  }
+
+  .new-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #ff4500;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    color: white;
+    letter-spacing: 2px;
+    z-index: 5;
+  }
+
+  /* ACTIONS */
+  .ig-actions {
+    padding: 10px 14px 6px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .ig-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 0;
+    line-height: 1;
+    color: #262626;
+    transition: transform 0.15s ease;
+  }
+
+  .ig-action-btn:hover { transform: scale(1.15); }
+
+  .ig-action-btn.save { margin-left: auto; }
+
+  .ig-likes {
+    padding: 2px 14px 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #262626;
+  }
+
+  .ig-likes span {
+    font-weight: 400;
+    color: #737373;
+  }
+
+  /* CAPTION */
+  .ig-caption {
+    padding: 0 14px 8px;
+    font-size: 13px;
+    color: #262626;
+    line-height: 1.6;
+  }
+
+  .ig-caption strong {
+    font-weight: 600;
+  }
+
+  .ig-caption .hashtags {
+    color: #3897f0;
+    font-size: 12.5px;
+    line-height: 1.8;
+    margin-top: 6px;
+    display: block;
+  }
+
+  .ig-caption .more {
+    color: #737373;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  /* COMMENTS */
+  .ig-comments-preview {
+    padding: 0 14px 4px;
+    font-size: 12px;
+    color: #737373;
+    cursor: pointer;
+  }
+
+  .ig-comment-row {
+    padding: 2px 14px;
+    font-size: 12.5px;
+    color: #262626;
+    line-height: 1.5;
+  }
+
+  .ig-comment-row strong { font-weight: 600; }
+
+  .ig-timestamp {
+    padding: 4px 14px 14px;
+    font-size: 10px;
+    color: #737373;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Story ring */
+  .story-ring {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    padding: 2px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .story-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #0a0a0a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+
+  /* Like animation */
+  #like-btn.liked { color: #ed4956; }
+</style>
+</head>
+<body>
+<div class="ig-container">
+
+  <!-- HEADER -->
+  <div class="ig-header">
+    <div class="story-ring">
+      <div class="story-inner">🔥</div>
+    </div>
+    <div>
+      <div class="ig-handle">hotstems.official</div>
+      <div class="ig-location">Sponsored · Awareness Campaign</div>
+    </div>
+    <div class="ig-more">···</div>
+  </div>
+
+  <!-- POST IMAGE -->
+  <div class="ig-image">
+    <div class="post-bg"></div>
+
+    <div class="ep-tag">EP. 01</div>
+    <div class="new-tag">NEW 🔥</div>
+
+    <div class="post-content">
+      <div class="post-show-logo">🔥 HOT STEMS</div>
+      <div class="post-show-sub">Truth · Heat · Breakthroughs</div>
+
+      <div class="guest-card">
+        <div class="guest-photo">👩‍🔬</div>
+        <div class="guest-info">
+          <div class="guest-name-post">Dr. Aisha Chen</div>
+          <div class="guest-creds">
+            Principal Investigator · MIT CSAIL<br>
+            AI &amp; Machine Learning Research<br>
+            Forbes 30 Under 30 · Science
+          </div>
+        </div>
+      </div>
+
+      <div class="post-stat">
+        <div class="stat-big">28%</div>
+        <div class="stat-small">of STEM workers in Canada are women.<br>This is what closing that gap looks like.</div>
+      </div>
+
+      <div class="post-quote">
+        "The world needs your brain in the room —<br>every algorithm written without you is a worse algorithm."
+      </div>
+
+      <div class="wings-row">
+        <div class="mini-wing">🍗</div>
+        <div class="mini-wing">🍗</div>
+        <div class="mini-wing">🍗</div>
+        <div class="mini-wing hot">🍗</div>
+        <div class="mini-wing hot">🌶</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="ig-actions">
+    <button class="ig-action-btn" id="like-btn" onclick="toggleLike()" title="Like">♡</button>
+    <button class="ig-action-btn" title="Comment">💬</button>
+    <button class="ig-action-btn" title="Share">↗</button>
+    <button class="ig-action-btn save" title="Save">🔖</button>
+  </div>
+
+  <!-- LIKES -->
+  <div class="ig-likes" id="like-count">12,847 <span>likes</span></div>
+
+  <!-- CAPTION -->
+  <div class="ig-caption">
+    <strong>hotstems.official</strong> She survived 6 years of PhD cuts, being mistaken for support staff in her own lab, and a panel where she was the only woman in a room of 40. Then she ate the last wing and said:<br><br>
+    <em>"Burn down the myth that excellence speaks for itself — it doesn't. Not equally. Not yet."</em><br><br>
+    🔥 Episode 1 with Dr. Aisha Chen drops <strong>FRIDAY</strong>. Link in bio.<br>
+    <span class="hashtags">#HotStems #WomenInSTEM #GenderBiasInSTEM #STEMAdvocacy #RepresentationMatters #WomenInScience #BreakTheBias #STEMGirlsCanada #HotOnes</span>
+  </div>
+
+  <!-- COMMENTS -->
+  <div class="ig-comments-preview">View all 1,204 comments</div>
+
+  <div class="ig-comment-row">
+    <strong>khelan.r</strong> this is SO needed 🔥 sharing this everywhere
+  </div>
+  <div class="ig-comment-row">
+    <strong>sciencegalx</strong> "every algorithm written without you is a worse algorithm" I'm literally crying 😭💜
+  </div>
+  <div class="ig-comment-row">
+    <strong>stemteacher_ms</strong> Showing this to every one of my Grade 11 girls on Monday. Thank you. 🙏
+  </div>
+
+  <div class="ig-timestamp">3 hours ago</div>
+</div>
+
+<script>
+let liked = false;
+let count = 12847;
+
+function toggleLike() {
+  liked = !liked;
+  const btn = document.getElementById('like-btn');
+  const lc = document.getElementById('like-count');
+  if(liked) {
+    btn.textContent = '❤️';
+    btn.classList.add('liked');
+    count++;
+  } else {
+    btn.textContent = '♡';
+    btn.classList.remove('liked');
+    count--;
+  }
+  lc.innerHTML = `${count.toLocaleString()} <span>likes</span>`;
+}
+</script>
+</body>
+</html>
